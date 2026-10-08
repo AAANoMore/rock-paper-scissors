@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+char *names[3] ={"ROCK", "PAPER", "SCISSORS"};
+
+int player_choice() {
+	int choice;
+	printf("CHOICE MOVE\n");
+	printf("0 - ROCK\n");
+	printf("1 - PAPER\n");
+	printf("2 - SCISSORS\n");
+	printf("9 - EXIT\n");
+	printf("YOUR CHOICE: ");
+	scanf("%d", &choice);
+	
+	if (choice == 9) return -1;
+	if (choice < 0 || choice > 2) {
+		printf("INVALID INPUT, TRY AGAIN\n");
+		return player_choice();
+	} 
+	return choice;
+}
+
+int winner(int player, int computer) {
+	if (player == computer) return 0;
+	if ((player == 0 && computer == 1) ||
+		(player == 1 && computer == 2) ||
+		(player == 2 && computer == 0)) {
+		return 1;
+		
+	}
+	return 2;
+}
+int main() {
+	srand(time(NULL));
+	int wins = 0, losses = 0, draws = 0;
+	printf("ROCK, PAPER, SCISSORS\n");
+	while(1) {
+		int player = player_choice();
+		if (player == -1) break;
+		
+		int computer = rand() % 3;
+		
+		printf("\nYOU: %s\n", names[player]);
+		printf("computer: %s\n", names[computer]);
+		
+		int result = winner(player, computer);
+		if (result == 0) {
+			printf("DRAW!\n");
+			draws++;
+		} else if (result == 1) {
+			printf("YOU WON\n");
+			wins++;
+		} else {
+			printf("YOU LOST\n");
+			losses++;
+		}
+		printf("COUNT: wins %d | losses %d | draws % d\n", wins, losses, draws);
+		
+	}
+	printf("\nGAME OVER. RESULTS: %d wins, %d losses, %d draws.\n", wins, losses, draws);
+	return 0;
+}
